@@ -65,7 +65,7 @@
         document.getElementById("status").innerText = "⏳ Обработка...";
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const formData = new FormData();
-        formData.append("audio", audioBlob);
+        formData.append("audio", audioBlob, "audio.webm");
 
         try {
           const response = await fetch(`${SERVER_URL}/ask`, {
