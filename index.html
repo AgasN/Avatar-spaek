@@ -83,7 +83,13 @@
             body: JSON.stringify({ prompt })
           });
           const gptData = await gptRes.json();
-          const reply = gptData.choices[0].message.content;
+          if (!gptData.choices || !gptData.choices[0]) {
+  document.getElementById("status").innerText = "❌ Ошибка GPT: пустой ответ";
+  console.error("GPT error response:", gptData);
+  return;
+}
+const reply = gptData.choices[0].message.content;
+
 
           document.getElementById("status").innerText = "🎧 Генерация ответа...";
 
