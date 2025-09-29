@@ -20,13 +20,8 @@
       color: white;
       border: none;
       border-radius: 8px;
-      transition: background 0.3s;
     }
-    button:disabled {
-      background-color: #999999;
-      cursor: wait;
-    }
-    button:hover:enabled {
+    button:hover {
       background-color: #45a049;
     }
     audio {
@@ -37,7 +32,7 @@
 <body>
   <h1>Задай вопрос голосом</h1>
 
-  <button id="recordBtn" onclick="startRecording()" style="margin-bottom:20px;">🎙 Начать запись вопроса</button>
+  <button onclick="startRecording()">🎙 Начать запись вопроса</button>
   <p id="status">Ожидаю голосовой вопрос...</p>
   <audio id="audioPlayer" controls style="display:none;"></audio>
 
@@ -46,17 +41,9 @@
 
     let mediaRecorder;
     let audioChunks = [];
-    const RECORD_SECONDS = 7; // Можно увеличить до 10+ при желании
-    let timerId;
 
     async function startRecording() {
-      const recordBtn = document.getElementById('recordBtn');
-      recordBtn.disabled = true;
-      let remaining = RECORD_SECONDS;
-      recordBtn.textContent = `Осталось: ${remaining} сек`;
-
       document.getElementById("status").innerText = "🎙️ Запись...";
-
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       audioChunks = [];
@@ -66,9 +53,6 @@
       };
 
       mediaRecorder.onstop = async () => {
-        clearInterval(timerId);
-        recordBtn.textContent = `🎙 Начать запись вопроса`;
-        recordBtn.disabled = false;
         document.getElementById("status").innerText = "⏳ Обработка...";
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const formData = new FormData();
@@ -99,25 +83,7 @@
       };
 
       mediaRecorder.start();
-
-      // Визуальный обратный таймер на кнопке
-      timerId = setInterval(() => {
-        remaining -= 1;
-        if (remaining > 0) {
-          recordBtn.textContent = `Осталось: ${remaining} сек`;
-        } else {
-          clearInterval(timerId);
-          recordBtn.textContent = 'Завершение...';
-          mediaRecorder.stop();
-        }
-      }, 1000);
-
-      // Безопасная остановка через N секунд
-      setTimeout(() => {
-        if (mediaRecorder.state !== 'inactive') {
-          mediaRecorder.stop();
-        }
-      }, RECORD_SECONDS * 1000 + 200);
+      setTimeout(() => mediaRecorder.stop(), 7000);
     }
   </script>
 </body>
