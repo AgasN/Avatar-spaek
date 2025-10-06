@@ -1,90 +1,202 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Голосовой Аватар</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тендерный интенсив — от старта до контракта</title>
   <style>
     body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px;
-      background: linear-gradient(to right, #f2f2f2, #e0eafc);
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e3f2fd, #f5f5f5);
+      color: #222;
     }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      margin-top: 20px;
-      cursor: pointer;
-      background-color: #4CAF50;
+
+    header {
+      background: #1565c0;
       color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1em;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .course-info {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .course-info h2 {
+      color: #1565c0;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .price {
+      background: #f0f7ff;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .price h3 {
+      margin: 10px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #1565c0;
+      color: white;
+      padding: 14px 28px;
       border: none;
       border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
     }
-    button:hover {
-      background-color: #45a049;
+
+    .btn:hover {
+      background-color: #0d47a1;
     }
-    audio {
-      margin-top: 20px;
+
+    .chat-box {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #chat {
+      max-height: 350px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: left;
+      background: #fafafa;
+    }
+
+    .user-msg {
+      color: #1565c0;
+      margin: 8px 0;
+    }
+
+    .bot-msg {
+      color: #333;
+      margin: 8px 0;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    footer {
+      background: #1565c0;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
-  <h1>Задай вопрос голосом</h1>
 
-  <button onclick="startRecording()">🎙 Начать запись вопроса</button>
-  <p id="status">Ожидаю голосовой вопрос...</p>
-  <audio id="audioPlayer" controls style="display:none;"></audio>
+  <header>
+    <h1>Тендерный интенсив «От старта до контракта»</h1>
+    <p>Минимум теории — максимум практики. Пошагово от заявки до победы в аукционе!</p>
+  </header>
+
+  <div class="container">
+
+    <section class="course-info">
+      <h2>Что вас ждет на курсе</h2>
+      <ul>
+        <li>3 лекции с сжатой, актуальной теорией без воды;</li>
+        <li>3 практических занятия с подачей заявок и участием в аукционе;</li>
+        <li>Готовые шаблоны документов и чек-листы;</li>
+        <li>Обновления по законодательству 2024–2025 годов;</li>
+        <li>Поддержка эксперта по всем вопросам.</li>
+      </ul>
+    </section>
+
+    <section class="price">
+      <h2>Стоимость участия</h2>
+      <h3>🎓 С сертификатом — 39 900 руб.</h3>
+      <h3>📘 Без сертификата — 34 900 руб.</h3>
+      <a class="btn" href="#">Оформить рассрочку</a>
+    </section>
+
+    <section class="chat-box">
+      <h2>Задайте вопрос ассистенту курса</h2>
+      <div id="chat"></div>
+      <textarea id="question" placeholder="Введите ваш вопрос..." rows="3"></textarea>
+      <button class="btn" onclick="sendMessage()">Отправить</button>
+    </section>
+
+  </div>
+
+  <footer>
+    © 2025 Тендерный интенсив. Все права защищены.
+  </footer>
 
   <script>
     const SERVER_URL = "https://backend-server-fwx6.onrender.com";
 
-    let mediaRecorder;
-    let audioChunks = [];
+    async function sendMessage() {
+      const input = document.getElementById("question");
+      const chat = document.getElementById("chat");
+      const userMessage = input.value.trim();
+      if (!userMessage) return;
 
-    async function startRecording() {
-      document.getElementById("status").innerText = "🎙️ Запись...";
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
+      chat.innerHTML += `<p class='user-msg'><b>Вы:</b> ${userMessage}</p>`;
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
 
-      mediaRecorder.ondataavailable = event => {
-        if (event.data.size > 0) audioChunks.push(event.data);
-      };
-
-      mediaRecorder.onstop = async () => {
-        document.getElementById("status").innerText = "⏳ Обработка...";
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-        const formData = new FormData();
-        formData.append("audio", audioBlob, "audio.webm");
-
-        try {
-          const response = await fetch(`${SERVER_URL}/ask`, {
-            method: "POST",
-            body: formData
-          });
-
-          const data = await response.json();
-
-          if (data.audioUrl) {
-            const player = document.getElementById("audioPlayer");
-            player.src = data.audioUrl;
-            player.style.display = "block";
-            player.play();
-            document.getElementById("status").innerText = "✅ Ответ воспроизводится!";
-          } else {
-            document.getElementById("status").innerText = "❌ Ответ не получен.";
-            console.error("Ошибка ответа сервера:", data);
-          }
-        } catch (error) {
-          document.getElementById("status").innerText = "❌ Ошибка при получении ответа.";
-          console.error("Ошибка:", error);
-        }
-      };
-
-      mediaRecorder.start();
-      setTimeout(() => mediaRecorder.stop(), 7000);
+      try {
+        const res = await fetch(`${SERVER_URL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMessage })
+        });
+        const data = await res.json();
+        const answer = data.reply || "Извините, произошла ошибка.";
+        chat.innerHTML += `<p class='bot-msg'><b>Ассистент:</b> ${answer}</p>`;
+      } catch (err) {
+        chat.innerHTML += `<p class='bot-msg'><b>Ошибка:</b> не удалось получить ответ.</p>`;
+      }
+      chat.scrollTop = chat.scrollHeight;
     }
   </script>
+
 </body>
 </html>
