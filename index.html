@@ -12,121 +12,23 @@
       background: linear-gradient(to right, #e3f2fd, #f5f5f5);
       color: #222;
     }
-
-    header {
-      background: #1565c0;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      font-size: 1.1em;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .course-info {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 40px;
-    }
-
-    .course-info h2 {
-      color: #1565c0;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      text-align: left;
-      line-height: 1.6;
-    }
-
-    .price {
-      background: #f0f7ff;
-      padding: 25px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .price h3 {
-      margin: 10px 0;
-    }
-
-    .btn {
-      display: inline-block;
-      background-color: #1565c0;
-      color: white;
-      padding: 14px 28px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .btn:hover {
-      background-color: #0d47a1;
-    }
-
-    .chat-box {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    #chat {
-      max-height: 350px;
-      overflow-y: auto;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      text-align: left;
-      background: #fafafa;
-    }
-
-    .user-msg {
-      color: #1565c0;
-      margin: 8px 0;
-    }
-
-    .bot-msg {
-      color: #333;
-      margin: 8px 0;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      resize: none;
-      font-family: inherit;
-      font-size: 15px;
-    }
-
-    footer {
-      background: #1565c0;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 50px;
-      font-size: 0.9em;
-    }
+    header { background: #1565c0; color: white; padding: 40px 20px; text-align: center; }
+    header h1 { font-size: 2em; margin-bottom: 10px; }
+    header p { font-size: 1.1em; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .course-info { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 40px; }
+    .course-info h2 { color: #1565c0; margin-bottom: 20px; }
+    ul { text-align: left; line-height: 1.6; }
+    .price { background: #f0f7ff; padding: 25px; border-radius: 10px; text-align: center; margin-bottom: 40px; }
+    .price h3 { margin: 10px 0; }
+    .btn { display: inline-block; background-color: #1565c0; color: white; padding: 14px 28px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; text-decoration: none; }
+    .btn:hover { background-color: #0d47a1; }
+    .chat-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    #chat { max-height: 350px; overflow-y: auto; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px; text-align: left; background: #fafafa; }
+    .user-msg { color: #1565c0; margin: 8px 0; }
+    .bot-msg { color: #333; margin: 8px 0; }
+    textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; resize: none; font-family: inherit; font-size: 15px; }
+    footer { background: #1565c0; color: white; text-align: center; padding: 20px; margin-top: 50px; font-size: 0.9em; }
   </style>
 </head>
 <body>
@@ -160,7 +62,7 @@
       <h2>Задайте вопрос ассистенту курса</h2>
       <div id="chat"></div>
       <textarea id="question" placeholder="Введите ваш вопрос..." rows="3"></textarea>
-      <button class="btn" onclick="sendMessage()">Отправить</button>
+      <button class="btn" id="sendBtn">Отправить</button>
     </section>
 
   </div>
@@ -171,30 +73,74 @@
 
   <script>
     const SERVER_URL = "https://backend-server-fwx6.onrender.com";
+    const input = document.getElementById("question");
+    const chat = document.getElementById("chat");
+    const sendBtn = document.getElementById("sendBtn");
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") sendMessage();
+    });
 
     async function sendMessage() {
-      const input = document.getElementById("question");
-      const chat = document.getElementById("chat");
-      const userMessage = input.value.trim();
+      const userMessage = (input.value || "").trim();
       if (!userMessage) return;
 
-      chat.innerHTML += `<p class='user-msg'><b>Вы:</b> ${userMessage}</p>`;
+      appendLine(`<b>Вы:</b> ${escapeHtml(userMessage)}`, "user-msg");
       input.value = "";
-      chat.scrollTop = chat.scrollHeight;
+      scrollBottom();
+
+      const thinkingId = appendLine(`<b>Ассистент:</b> …`, "bot-msg");
+      disableSend(true);
 
       try {
         const res = await fetch(`${SERVER_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userMessage })
+          body: JSON.stringify({ prompt: userMessage })
         });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          replaceLine(thinkingId, `<b>Ошибка:</b> ${res.status} — ${escapeHtml(errText)}`);
+          return;
+        }
+
         const data = await res.json();
-        const answer = data.reply || "Извините, произошла ошибка.";
-        chat.innerHTML += `<p class='bot-msg'><b>Ассистент:</b> ${answer}</p>`;
+        const answer = (data && typeof data.text === "string") ? data.text : "Ответ пустой.";
+        replaceLine(thinkingId, `<b>Ассистент:</b> ${escapeHtml(answer)}`);
       } catch (err) {
-        chat.innerHTML += `<p class='bot-msg'><b>Ошибка:</b> не удалось получить ответ.</p>`;
+        replaceLine(thinkingId, `<b>Ошибка сети:</b> ${escapeHtml(err?.message || String(err))}`);
+      } finally {
+        disableSend(false);
+        scrollBottom();
       }
+    }
+
+    function appendLine(html, cls) {
+      const p = document.createElement("p");
+      p.className = cls;
+      p.innerHTML = html;
+      chat.appendChild(p);
+      return p;
+    }
+    function replaceLine(el, html) {
+      if (el) el.innerHTML = html;
+    }
+    function scrollBottom() {
       chat.scrollTop = chat.scrollHeight;
+    }
+    function disableSend(disabled) {
+      sendBtn.disabled = disabled;
+      sendBtn.textContent = disabled ? "Отправка..." : "Отправить";
+    }
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
   </script>
 
