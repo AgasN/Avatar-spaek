@@ -2,169 +2,191 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Межотраслевое Профессиональное Обучение</title>
-  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="./app-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./logo 32x32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="./logo 64x64.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="./logo 128x128.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="./logo 256x256.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./logo 512x512.png">
+  <link rel="mask-icon" href="./logo.svg" color="#1B7D3A">
   <link rel="manifest" href="./site.webmanifest">
   <meta name="theme-color" content="#1B7D3A">
+
   <style>
+    :root {
+      --brand: #1B7D3A;
+      --brand2: #23A85A;
+      --bg1: #e3f2fd;
+      --bg2: #f5f5f5;
+      --text: #222;
+      --muted: #444;
+      --card: #fff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #e3f2fd, #f5f5f5);
-      color: #222;
-      font-size: 1.5em;
+      color: var(--text);
+      background: linear-gradient(to right, var(--bg1), var(--bg2));
+      font-size: clamp(0.75rem, 0.8vw + 0.7rem, 0.9rem);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-
     header {
-      background: linear-gradient(90deg, #1B7D3A, #23A85A);
-      color: white;
-      padding: 80px 20px;
+      background: linear-gradient(90deg, var(--brand), var(--brand2));
+      color: #fff;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: clamp(40px, 8vw, 60px) 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.2);
     }
-
-    header img.logo {
-      width: 200px;
+    header .logo {
+      width: clamp(100px, 20vw, 140px);
       height: auto;
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto clamp(10px, 2vw, 15px);
     }
-
     header h1 {
-      font-size: 3em;
       font-weight: 700;
-      letter-spacing: 1px;
-      margin: 0;
       text-transform: uppercase;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      text-shadow: 2px 2px 6px rgba(0,0,0,.3);
+      font-size: clamp(1.2rem, 3vw + 0.5rem, 1.8rem);
+      line-height: 1.2;
+      word-break: break-word;
+      hyphens: auto;
+      max-width: 95%;
+      margin: 0 auto;
+      text-wrap: balance;
     }
-
     header p {
-      font-size: 1.3em;
+      margin-top: clamp(6px, 1.5vw, 10px);
+      font-size: clamp(0.9rem, 1vw + 0.6rem, 1.1rem);
       opacity: 0.95;
-      margin-top: 10px;
     }
-
     .container {
       max-width: 900px;
-      margin: 60px auto;
-      padding: 0 20px;
+      margin: clamp(24px, 6vw, 50px) auto;
+      padding: 0 clamp(14px, 4vw, 20px);
     }
-
-    .course-info {
-      background: white;
-      padding: 45px;
+    .card {
+      background: var(--card);
+      padding: clamp(18px, 4vw, 30px);
       border-radius: 14px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 60px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+      margin-bottom: clamp(20px, 6vw, 40px);
     }
-
-    .course-info h2 {
-      color: #1B7D3A;
-      margin-bottom: 25px;
-      font-size: 2em;
+    .h2 {
+      color: var(--brand);
+      font-size: clamp(1rem, 2vw + 0.6rem, 1.3rem);
+      margin-bottom: clamp(10px, 2vw, 16px);
+      text-align: center;
+      line-height: 1.2;
     }
-
     ul {
-      text-align: left;
-      line-height: 1.8;
-      font-size: 1em;
+      padding-left: 1.1em;
+      line-height: 1.6;
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.9rem);
     }
-
     .price {
       background: #f0f7ff;
-      padding: 35px;
-      border-radius: 12px;
       text-align: center;
-      margin-bottom: 60px;
-      font-size: 1em;
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.9rem);
     }
-
-    .price h3 {
-      margin: 16px 0;
+    .price h3 { margin: clamp(6px, 1.5vw, 10px) 0; }
+    .cta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(10px, 2.5vw, 14px);
+      margin-top: clamp(12px, 3vw, 18px);
     }
-
     .btn {
       display: inline-block;
-      background-color: #1B7D3A;
-      color: white;
-      padding: 18px 36px;
-      border: none;
+      padding: clamp(10px, 2.4vw, 12px) clamp(16px, 4.5vw, 22px);
       border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.95rem);
+      transition: transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+      text-align: center;
+      border: 2px solid transparent;
     }
-
-    .btn:hover {
-      background-color: #145c2d;
-      transform: scale(1.05);
-    }
-
-    .chat-box {
-      background: white;
-      padding: 35px;
-      border-radius: 14px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    #chat {
-      max-height: 500px;
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: #145c2d; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--brand); border-color: var(--brand); }
+    .btn-outline:hover { background: var(--brand); color: #fff; transform: translateY(-1px); }
+    .chat {
+      max-height: clamp(240px, 45vh, 380px);
       overflow-y: auto;
-      padding: 14px;
+      padding: clamp(6px, 1.5vw, 10px);
       border: 1px solid #ccc;
       border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: left;
       background: #fafafa;
-      font-size: 1em;
+      margin-bottom: clamp(10px, 3vw, 16px);
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.9rem);
+      text-align: left;
     }
-
-    .user-msg {
-      color: #1B7D3A;
-      margin: 10px 0;
+    .user-msg { color: var(--brand); margin: 8px 0; }
+    .bot-msg { color: var(--muted); margin: 8px 0; }
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(8px, 2vw, 12px);
+      align-items: center;
+      margin-top: clamp(10px, 3vw, 16px);
     }
-
-    .bot-msg {
-      color: #333;
-      margin: 10px 0;
-    }
-
     textarea {
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
+      padding: clamp(8px, 2vw, 12px);
+      border-radius: 8px;
       border: 1px solid #ccc;
-      resize: none;
       font-family: inherit;
-      font-size: 1em;
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.9rem);
+      resize: none;
+      min-height: 80px;
     }
-
+    .btn-send {
+      background: var(--brand);
+      color: #fff;
+      padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 22px);
+      border-radius: 8px;
+      font-size: clamp(0.8rem, 1vw + 0.6rem, 0.9rem);
+      border: none;
+      cursor: pointer;
+      transition: transform .15s ease, background .2s ease;
+    }
+    .btn-send:hover { background: #145c2d; transform: translateY(-1px); }
+    @media (max-width: 640px) {
+      .cta { grid-template-columns: 1fr; }
+      .actions { grid-template-columns: 1fr; }
+      .btn, .btn-send { width: 100%; }
+      header h1 { font-size: clamp(1rem, 5vw + 0.6rem, 1.3rem); }
+    }
     footer {
-      background: #1B7D3A;
-      color: white;
+      background: var(--brand);
+      color: #fff;
       text-align: center;
-      padding: 30px;
-      margin-top: 60px;
-      font-size: 0.9em;
+      padding: clamp(16px, 4vw, 24px);
+      font-size: clamp(0.7rem, 0.8vw + 0.6rem, 0.85rem);
+      margin-top: clamp(24px, 6vw, 50px);
     }
   </style>
 </head>
 <body>
-
   <header>
-    <img src="./logo.svg" alt="Логотип МПО" class="logo" />
+    <picture>
+      <source srcset="./logo.svg" type="image/svg+xml">
+      <img src="./mpo logo.png" alt="Логотип МПО" class="logo">
+    </picture>
     <h1>Межотраслевое Профессиональное Обучение</h1>
     <p>Современные знания. Реальные навыки.</p>
   </header>
 
   <div class="container">
-
-    <section class="course-info">
-      <h2>Что вас ждет на курсе</h2>
+    <section class="card">
+      <h2 class="h2">Что вас ждет на курсе</h2>
       <ul>
         <li>3 лекции с сжатой, актуальной теорией без воды;</li>
         <li>3 практических занятия с подачей заявок и участием в аукционе;</li>
@@ -174,20 +196,24 @@
       </ul>
     </section>
 
-    <section class="price">
-      <h2>Стоимость участия</h2>
+    <section class="card price">
+      <h2 class="h2">Стоимость участия</h2>
       <h3>🎓 С сертификатом — 39 900 руб.</h3>
       <h3>📘 Без сертификата — 34 900 руб.</h3>
-      <a class="btn" href="#">Оформить рассрочку</a>
+      <div class="cta">
+        <a class="btn btn-primary" href="#">Купить со скидкой</a>
+        <a class="btn btn-outline" href="#">Оформить рассрочку</a>
+      </div>
     </section>
 
-    <section class="chat-box">
-      <h2>Задайте вопрос ассистенту курса</h2>
-      <div id="chat"></div>
-      <textarea id="question" placeholder="Введите ваш вопрос..." rows="3"></textarea>
-      <button class="btn" id="sendBtn">Отправить</button>
+    <section class="card">
+      <h2 class="h2">Задайте вопрос ассистенту курса</h2>
+      <div id="chat" class="chat"></div>
+      <div class="actions">
+        <textarea id="question" placeholder="Введите ваш вопрос..." rows="3"></textarea>
+        <button class="btn-send" id="sendBtn">Отправить</button>
+      </div>
     </section>
-
   </div>
 
   <footer>
@@ -208,27 +234,22 @@
     async function sendMessage() {
       const userMessage = (input.value || "").trim();
       if (!userMessage) return;
-
       appendLine(`<b>Вы:</b> ${escapeHtml(userMessage)}`, "user-msg");
       input.value = "";
       scrollBottom();
-
       const thinkingId = appendLine(`<b>Ассистент:</b> …`, "bot-msg");
       disableSend(true);
-
       try {
         const res = await fetch(`${SERVER_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: userMessage })
         });
-
         if (!res.ok) {
           const errText = await res.text();
           replaceLine(thinkingId, `<b>Ошибка:</b> ${res.status} — ${escapeHtml(errText)}`);
           return;
         }
-
         const data = await res.json();
         const answer = (data && typeof data.text === "string") ? data.text : "Ответ пустой.";
         replaceLine(thinkingId, `<b>Ассистент:</b> ${escapeHtml(answer)}`);
@@ -247,20 +268,12 @@
       chat.appendChild(p);
       return p;
     }
-
-    function replaceLine(el, html) {
-      if (el) el.innerHTML = html;
-    }
-
-    function scrollBottom() {
-      chat.scrollTop = chat.scrollHeight;
-    }
-
+    function replaceLine(el, html) { if (el) el.innerHTML = html }
+    function scrollBottom() { chat.scrollTop = chat.scrollHeight }
     function disableSend(disabled) {
       sendBtn.disabled = disabled;
       sendBtn.textContent = disabled ? "Отправка..." : "Отправить";
     }
-
     function escapeHtml(str) {
       return String(str)
         .replaceAll("&", "&amp;")
@@ -270,6 +283,5 @@
         .replaceAll("'", "&#039;");
     }
   </script>
-
 </body>
 </html>
